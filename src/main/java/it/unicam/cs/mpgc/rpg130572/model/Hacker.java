@@ -33,7 +33,7 @@ public class Hacker {
         return nickname;
     }
 
-    public int getPuntiEnergia() {
+    public int getEnergia() {
         return puntiEnergia;
     }
 
