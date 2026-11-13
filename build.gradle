@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group = 'it.unicam.cs.mpgc'
@@ -9,11 +11,25 @@ repositories {
     mavenCentral()
 }
 
+// Configurazione di JavaFX
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
 dependencies {
+    // Gson per il salvataggio e caricamento JSON
+    implementation 'com.google.code.gson:gson:2.13.2'
+
+    // JUnit per i Test
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'com.google.code.gson:gson:2.13.2'
+}
+
+// Classe principale di avvio JavaFX
+application {
+    mainClass = 'it.unicam.cs.mpgc.rpg130572.view.AppJavaFX'
 }
 
 test {

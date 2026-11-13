@@ -25,6 +25,10 @@ public class GestorePartita {
         return hacker;
     }
 
+    public String getIdNodoObiettivo() {
+        return idNodoObiettivo;
+    }
+
     public MappaRete getMappa() {
         return mappa;
     }

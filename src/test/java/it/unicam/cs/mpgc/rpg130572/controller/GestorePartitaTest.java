@@ -92,4 +92,16 @@ class GestorePartitaTest {
 
         assertTrue(gestore.isSconfitta());
     }
+
+    @Test
+    void testSalvataggioPartita() {
+        it.unicam.cs.mpgc.rpg130572.persistence.GestoreSalvataggioJson salvataggio =
+                new it.unicam.cs.mpgc.rpg130572.persistence.GestoreSalvataggioJson();
+
+        assertDoesNotThrow(() -> salvataggio.salvaPartita(gestore, "salvataggio_test.json"));
+
+        java.io.File file = new java.io.File("salvataggio_test.json");
+        assertTrue(file.exists());
+        file.deleteOnExit(); // Rimuove il file temporaneo dopo il test
+    }
 }
