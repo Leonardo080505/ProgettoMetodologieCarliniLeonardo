@@ -1,0 +1,61 @@
+
+.root {
+    -fx-background-color: #0b0c10;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+}
+
+
+.label {
+    -fx-text-fill: #66fcf1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 3, 0, 0, 1);
+}
+
+
+.title-label {
+    -fx-text-fill: #45f3c3;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, #45f3c3, 10, 0.3, 0, 0);
+}
+
+
+.button {
+    -fx-background-color: rgba(31, 40, 51, 0.85);
+    -fx-text-fill: #66fcf1;
+    -fx-border-color: #45f3c3;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #45f3c3;
+    -fx-text-fill: #0b0c10;
+}
+
+
+.button-hack {
+    -fx-background-color: rgba(255, 0, 85, 0.85);
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ff0055;
+}
+
+.button-hack:hover {
+    -fx-background-color: #ff3300;
+    -fx-border-color: #ff3300;
+}
+
+
+.text-area {
+    -fx-control-inner-background: rgba(5, 5, 10, 0.82);
+    -fx-text-fill: #00ff66;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    -fx-border-color: #45f3c3;
+    -fx-border-width: 1px;
+}
+
+.text-area .content {
+    -fx-background-color: rgba(5, 5, 10, 0.82);
+}

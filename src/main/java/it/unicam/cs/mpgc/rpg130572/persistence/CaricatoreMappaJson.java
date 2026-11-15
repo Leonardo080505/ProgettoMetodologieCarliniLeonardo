@@ -12,6 +12,18 @@ import java.io.Reader;
  */
 public class CaricatoreMappaJson {
 
+    // Classe concreta di supporto per istanziare nodi di tipo NORMALE, TRAPPOLA o MAINFRAME
+    private static class NodoBase extends NodoRete {
+        public NodoBase(String id, String nome, int livelloSicurezza, String tipo) {
+            super(id, nome, livelloSicurezza, tipo);
+        }
+
+        @Override
+        public String ottieniDescrizione() {
+            return getId() + " - " + getNome() + " [Sicurezza: " + getLivelloSicurezza() + "]";
+        }
+    }
+
     public MappaRete caricaDaRisorse(String nomeFile) {
         InputStream is = getClass().getClassLoader().getResourceAsStream(nomeFile);
         if (is == null) {
@@ -22,26 +34,33 @@ public class CaricatoreMappaJson {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
             MappaRete mappa = new MappaRete();
 
-            // 1. Lettura dei nodi
+            // 1. Lettura e creazione di TUTTI i nodi
             JsonArray nodiArray = jsonObject.getAsJsonArray("nodi");
             for (JsonElement elem : nodiArray) {
                 JsonObject obj = elem.getAsJsonObject();
-                String tipo = obj.get("tipo").getAsString();
+                String tipo = obj.has("tipo") ? obj.get("tipo").getAsString() : "NORMALE";
                 String id = obj.get("id").getAsString();
                 String nome = obj.get("nome").getAsString();
                 int sicurezza = obj.get("livelloSicurezza").getAsInt();
 
+                NodoRete nodoGenerato;
+
                 if ("FIREWALL".equalsIgnoreCase(tipo)) {
-                    int danno = obj.get("danno").getAsInt();
-                    mappa.aggiungiNodo(new Firewall(id, nome, sicurezza, danno));
+                    int danno = obj.has("danno") ? obj.get("danno").getAsInt() : 15;
+                    nodoGenerato = new Firewall(id, nome, sicurezza, danno);
                 } else if ("SERVER".equalsIgnoreCase(tipo)) {
-                    String dati = obj.get("contenutoDati").getAsString();
-                    int ricompensa = obj.get("valoreRicompensa").getAsInt();
-                    mappa.aggiungiNodo(new ServerDati(id, nome, sicurezza, dati, ricompensa));
+                    String dati = obj.has("contenutoDati") ? obj.get("contenutoDati").getAsString() : "Dati segreti";
+                    int ricompensa = obj.has("valoreRicompensa") ? obj.get("valoreRicompensa").getAsInt() : 10;
+                    nodoGenerato = new ServerDati(id, nome, sicurezza, dati, ricompensa);
+                } else {
+                    // Gestisce i nodi di tipo NORMALE, TRAPPOLA, MAINFRAME, ecc.
+                    nodoGenerato = new NodoBase(id, nome, sicurezza, tipo);
                 }
+
+                mappa.aggiungiNodo(nodoGenerato);
             }
 
-            // 2. Lettura dei collegamenti
+            // 2. Lettura dei collegamenti (ora tutti i nodi esistono già nella mappa!)
             JsonArray collegamentiArray = jsonObject.getAsJsonArray("collegamenti");
             for (JsonElement elem : collegamentiArray) {
                 JsonObject obj = elem.getAsJsonObject();

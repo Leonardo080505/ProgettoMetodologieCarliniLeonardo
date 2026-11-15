@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg130572.model;
 
+import java.util.Objects;
+
 /**
  * Rappresenta un generico nodo all'interno della rete Cyberpunk.
  * Questa classe astratta fa da base per i vari tipi di server e nodi di sicurezza.
@@ -9,8 +11,10 @@ public abstract class NodoRete {
     private final String nome;
     private int livelloSicurezza;
     private boolean hackerato;
+    private final String tipo; // "NORMALE", "TRAPPOLA", "MAINFRAME"
 
-    public NodoRete(String id, String nome, int livelloSicurezza) {
+    // Costruttore completo con tipo
+    public NodoRete(String id, String nome, int livelloSicurezza, String tipo) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("L'ID del nodo non può essere vuoto.");
         }
@@ -21,6 +25,12 @@ public abstract class NodoRete {
         this.nome = nome;
         this.livelloSicurezza = livelloSicurezza;
         this.hackerato = false;
+        this.tipo = (tipo != null) ? tipo : "NORMALE";
+    }
+
+    // Costruttore di default (per retrocompatibilità se il tipo non viene specificato)
+    public NodoRete(String id, String nome, int livelloSicurezza) {
+        this(id, nome, livelloSicurezza, "NORMALE");
     }
 
     public String getId() {
@@ -43,9 +53,30 @@ public abstract class NodoRete {
         this.hackerato = hackerato;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public boolean isTrappola() {
+        return "TRAPPOLA".equalsIgnoreCase(tipo);
+    }
+
     /**
      * Metodo astratto che implementerà ogni tipo specifico di nodo (es. ServerDati, Firewall)
      * con la propria descrizione personalizzata.
      */
     public abstract String ottieniDescrizione();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodoRete nodoRete = (NodoRete) o;
+        return Objects.equals(id, nodoRete.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

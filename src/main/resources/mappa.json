@@ -1,31 +1,20 @@
 {
   "nodi": [
-    {
-      "tipo": "SERVER",
-      "id": "NODO_01",
-      "nome": "Gateway d'Ingresso",
-      "livelloSicurezza": 1,
-      "contenutoDati": "Log di sistema",
-      "valoreRicompensa": 50
-    },
-    {
-      "tipo": "FIREWALL",
-      "id": "NODO_02",
-      "nome": "Firewall Perimetrale",
-      "livelloSicurezza": 2,
-      "danno": 20
-    },
-    {
-      "tipo": "SERVER",
-      "id": "NODO_03",
-      "nome": "Mainframe Centrale",
-      "livelloSicurezza": 4,
-      "contenutoDati": "Database CPT Segreto",
-      "valoreRicompensa": 500
-    }
+    { "id": "NODO_01", "nome": "Gateway d'Ingresso", "livelloSicurezza": 1, "tipo": "NORMALE" },
+    { "id": "NODO_02", "nome": "Subnet Dipendenti", "livelloSicurezza": 2, "tipo": "NORMALE" },
+    { "id": "NODO_03", "nome": "DB Accesso Rapido", "livelloSicurezza": 1, "tipo": "TRAPPOLA" },
+    { "id": "NODO_04", "nome": "Server Proxy Locale", "livelloSicurezza": 2, "tipo": "NORMALE" },
+    { "id": "NODO_05", "nome": "Backup Log Mirror", "livelloSicurezza": 3, "tipo": "TRAPPOLA" },
+    { "id": "NODO_06", "nome": "Firewall Centrale", "livelloSicurezza": 4, "tipo": "NORMALE" },
+    { "id": "NODO_07", "nome": "Mainframe Riservato", "livelloSicurezza": 5, "tipo": "MAINFRAME" }
   ],
   "collegamenti": [
     { "da": "NODO_01", "a": "NODO_02" },
-    { "da": "NODO_02", "a": "NODO_03" }
+    { "da": "NODO_01", "a": "NODO_03" },
+    { "da": "NODO_02", "a": "NODO_04" },
+    { "da": "NODO_03", "a": "NODO_05" },
+    { "da": "NODO_04", "a": "NODO_06" },
+    { "da": "NODO_05", "a": "NODO_06" },
+    { "da": "NODO_06", "a": "NODO_07" }
   ]
 }

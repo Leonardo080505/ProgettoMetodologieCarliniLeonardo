@@ -55,7 +55,7 @@ public class Hacker {
         return livelloAbilita;
     }
 
-    public void incrementaLivelloAbilita() {
+    public void incrementaAbilita() {
         this.livelloAbilita++;
     }
 
