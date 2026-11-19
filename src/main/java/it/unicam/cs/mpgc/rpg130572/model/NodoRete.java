@@ -3,17 +3,16 @@ package it.unicam.cs.mpgc.rpg130572.model;
 import java.util.Objects;
 
 /**
- * Rappresenta un generico nodo all'interno della rete Cyberpunk.
- * Questa classe astratta fa da base per i vari tipi di server e nodi di sicurezza.
+ * Rappresenta un generico nodo all'interno della rete .
  */
 public abstract class NodoRete {
     private final String id;
     private final String nome;
     private int livelloSicurezza;
     private boolean hackerato;
-    private final String tipo; // "NORMALE", "TRAPPOLA", "MAINFRAME"
+    private final String tipo;
 
-    // Costruttore completo con tipo
+
     public NodoRete(String id, String nome, int livelloSicurezza, String tipo) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("L'ID del nodo non può essere vuoto.");
@@ -28,7 +27,7 @@ public abstract class NodoRete {
         this.tipo = (tipo != null) ? tipo : "NORMALE";
     }
 
-    // Costruttore di default (per retrocompatibilità se il tipo non viene specificato)
+
     public NodoRete(String id, String nome, int livelloSicurezza) {
         this(id, nome, livelloSicurezza, "NORMALE");
     }
