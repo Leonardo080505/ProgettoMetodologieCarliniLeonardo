@@ -8,11 +8,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * Gestisce il caricamento della MappaRete a partire da un file JSON situato nelle risorse.
+ * Gestisce il caricamento della mappa di rete da file , implementando l'interfaccia CaricatoreMappa.
  */
-public class CaricatoreMappaJson {
+public class CaricatoreMappaJson implements CaricatoreMappa {
 
-    // Classe concreta di supporto per istanziare nodi di tipo NORMALE, TRAPPOLA o MAINFRAME
     private static class NodoBase extends NodoRete {
         public NodoBase(String id, String nome, int livelloSicurezza, String tipo) {
             super(id, nome, livelloSicurezza, tipo);
@@ -24,6 +23,7 @@ public class CaricatoreMappaJson {
         }
     }
 
+    @Override
     public MappaRete caricaDaRisorse(String nomeFile) {
         InputStream is = getClass().getClassLoader().getResourceAsStream(nomeFile);
         if (is == null) {
@@ -34,7 +34,6 @@ public class CaricatoreMappaJson {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
             MappaRete mappa = new MappaRete();
 
-            // 1. Lettura e creazione di TUTTI i nodi
             JsonArray nodiArray = jsonObject.getAsJsonArray("nodi");
             for (JsonElement elem : nodiArray) {
                 JsonObject obj = elem.getAsJsonObject();
@@ -53,14 +52,12 @@ public class CaricatoreMappaJson {
                     int ricompensa = obj.has("valoreRicompensa") ? obj.get("valoreRicompensa").getAsInt() : 10;
                     nodoGenerato = new ServerDati(id, nome, sicurezza, dati, ricompensa);
                 } else {
-                    // Gestisce i nodi di tipo NORMALE, TRAPPOLA, MAINFRAME, ecc.
                     nodoGenerato = new NodoBase(id, nome, sicurezza, tipo);
                 }
 
                 mappa.aggiungiNodo(nodoGenerato);
             }
 
-            // 2. Lettura dei collegamenti (ora tutti i nodi esistono già nella mappa!)
             JsonArray collegamentiArray = jsonObject.getAsJsonArray("collegamenti");
             for (JsonElement elem : collegamentiArray) {
                 JsonObject obj = elem.getAsJsonObject();
