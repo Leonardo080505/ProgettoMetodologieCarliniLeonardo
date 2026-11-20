@@ -3,15 +3,15 @@ package it.unicam.cs.mpgc.rpg130572.model;
 import java.util.Objects;
 
 /**
- * Rappresenta un generico nodo all'interno della rete .
+ * Rappresenta un generico nodo all'interno della rete di gioco.
  */
 public abstract class NodoRete {
+
     private final String id;
     private final String nome;
     private int livelloSicurezza;
     private boolean hackerato;
     private final String tipo;
-
 
     public NodoRete(String id, String nome, int livelloSicurezza, String tipo) {
         if (id == null || id.isBlank()) {
@@ -26,7 +26,6 @@ public abstract class NodoRete {
         this.hackerato = false;
         this.tipo = (tipo != null) ? tipo : "NORMALE";
     }
-
 
     public NodoRete(String id, String nome, int livelloSicurezza) {
         this(id, nome, livelloSicurezza, "NORMALE");
@@ -60,10 +59,6 @@ public abstract class NodoRete {
         return "TRAPPOLA".equalsIgnoreCase(tipo);
     }
 
-    /**
-     * Metodo astratto che implementerà ogni tipo specifico di nodo (es. ServerDati, Firewall)
-     * con la propria descrizione personalizzata.
-     */
     public abstract String ottieniDescrizione();
 
     @Override
@@ -77,5 +72,9 @@ public abstract class NodoRete {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public int getBonusAbilita() {
+        return 1; // Di default i nodi normali forniscono +1 abilità
     }
 }

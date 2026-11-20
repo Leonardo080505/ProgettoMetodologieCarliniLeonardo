@@ -2,44 +2,51 @@ package it.unicam.cs.mpgc.rpg130572;
 
 import it.unicam.cs.mpgc.rpg130572.controller.GestorePartita;
 import it.unicam.cs.mpgc.rpg130572.model.*;
+import it.unicam.cs.mpgc.rpg130572.persistence.CaricatoreMappa;
 import it.unicam.cs.mpgc.rpg130572.persistence.CaricatoreMappaJson;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
-        // 1. Caricamento dinamico della Mappa dal file JSON nelle risorse
-        CaricatoreMappaJson caricatore = new CaricatoreMappaJson();
+        CaricatoreMappa caricatore = new CaricatoreMappaJson();
         MappaRete mappa = caricatore.caricaDaRisorse("mappa.json");
 
-        // 2. Creazione dell'Hacker
-        Hacker hacker = new Hacker( "CyberZero", 100, 2);
-
-        // 3. Inizializzazione del Gestore Partita (Obiettivo: NODO_03)
-        GestorePartita gestore = new GestorePartita(hacker, mappa, "NODO_03");
+        Hacker hacker = new Hacker("CyberZero", 100, 2);
+        GestorePartita gestore = new GestorePartita(hacker, mappa, "NODO_13");
         gestore.spostaHacker("NODO_01");
 
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("=== NETWORK HACKER (Mappa caricata da JSON) ===");
-        System.out.println("Obiettivo: Violare il Mainframe Centrale (NODO_03)!\n");
+        System.out.println("Obiettivo: Violare il Mainframe Riservato (NODO_10)!\n");
 
         while (!gestore.isVittoria() && !gestore.isSconfitta()) {
             NodoRete nodoAttuale = hacker.getNodoCorrente();
             System.out.println("--------------------------------------------------");
             System.out.println("HACKER: " + hacker.getNickname() + " | Energia: " + hacker.getEnergia() + " | Abilità: " + hacker.getLivelloAbilita());
-            System.out.println("POSIZIONE: " + nodoAttuale.ottieniDescrizione());
-
-            System.out.println("\nCosa vuoi fare?");
-            System.out.println("1) Tenta Hacking");
-            System.out.println("2) Spostati in un nodo adiacente");
-            System.out.print("Scelta: ");
+            System.out.println("POSIZIONE ATTUALE: [" + nodoAttuale.getId() + "] " + nodoAttuale.getNome() + " (Sicurezza: " + nodoAttuale.getLivelloSicurezza() + ")");
+            System.out.println("STATO NODO: " + (nodoAttuale.isHackerato() ? "VIOLATO ✅" : "NON VIOLATO ❌"));
+            System.out.println("--------------------------------------------------");
+            System.out.println("Azioni disponibili:");
+            System.out.println("1. Tenta Hacking nodo corrente");
+            System.out.println("2. Scansiona nodo target");
+            System.out.println("3. Spostati in un altro nodo");
+            System.out.print("Scegli un'opzione (1-3): ");
 
             String scelta = scanner.nextLine();
 
-            if (scelta.equals("1")) {
-                System.out.println("\n[ESITO]: " + gestore.tentaHackingNodoCorrente());
-            } else if (scelta.equals("2")) {
+            if ("1".equals(scelta)) {
+                String esito = gestore.tentaHackingNodoCorrente();
+                System.out.println("\n[HACKING]: " + esito);
+            } else if ("2".equals(scelta)) {
+                System.out.print("Inserisci l'ID del nodo da scansionare: ");
+                String idTarget = scanner.nextLine();
+                String esitoScansione = gestore.scansionaNodoTarget(idTarget);
+                System.out.println("\n[SCANSIONE]: " + esitoScansione);
+            } else if ("3".equals(scelta)) {
                 List<NodoRete> vicini = mappa.getNodiAdiacenti(nodoAttuale.getId());
                 System.out.println("\nNodi adiacenti disponibili:");
                 for (NodoRete v : vicini) {
@@ -60,9 +67,9 @@ public class Main {
 
         System.out.println("\n==================================================");
         if (gestore.isVittoria()) {
-            System.out.println(" VITTORIA! Hai violato il Mainframe Centrale!");
+            System.out.println(" VITTORIA! Hai violato il Mainframe Riservato (NODO_10)!");
         } else {
-            System.out.println("☠ SCONFITTA! Energia esaurita ☠");
+            System.out.println(" SCONFITTA! Energia esaurita ");
         }
         System.out.println("==================================================");
 

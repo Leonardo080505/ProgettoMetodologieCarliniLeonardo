@@ -25,12 +25,14 @@ public class MatrixCanvas extends Canvas {
 
         inizializza(width, height);
 
+        widthProperty().addListener(obs -> ridimensiona(getWidth(), getHeight()));
+        heightProperty().addListener(obs -> ridimensiona(getWidth(), getHeight()));
+
         AnimationTimer timer = new AnimationTimer() {
             private long lastUpdate = 0;
 
             @Override
             public void handle(long now) {
-                // Aggiorna l'animazione a ~20 FPS per un effetto fluido e non troppo frenetico
                 if (now - lastUpdate >= 50_000_000) {
                     disegna();
                     lastUpdate = now;
@@ -40,9 +42,23 @@ public class MatrixCanvas extends Canvas {
         timer.start();
     }
 
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    @Override
+    public double prefWidth(double height) {
+        return getWidth();
+    }
+
+    @Override
+    public double prefHeight(double width) {
+        return getHeight();
+    }
+
     private void inizializza(double width, double height) {
-        setWidth(width);
-        setHeight(height);
+        if (width <= 0 || height <= 0) return;
         this.columns = (int) (width / fontSize) + 1;
         this.drops = new int[columns];
         for (int i = 0; i < columns; i++) {
@@ -50,20 +66,37 @@ public class MatrixCanvas extends Canvas {
         }
     }
 
-    private void disegna() {
-        // Applica un velo nero semi-trasparente ad ogni frame per l'effetto scia
+    private synchronized void ridimensiona(double nuovaLarghezza, double nuovaAltezza) {
+        if (nuovaLarghezza <= 0 || nuovaAltezza <= 0) return;
+
+        int nuoveColonne = (int) (nuovaLarghezza / fontSize) + 1;
+        int[] nuoviDrops = new int[nuoveColonne];
+
+        for (int i = 0; i < nuoveColonne; i++) {
+            if (drops != null && i < drops.length) {
+                nuoviDrops[i] = drops[i];
+            } else {
+                nuoviDrops[i] = random.nextInt((int) (nuovaAltezza / fontSize) + 1);
+            }
+        }
+
+        this.columns = nuoveColonne;
+        this.drops = nuoviDrops;
+    }
+
+    private synchronized void disegna() {
+        if (drops == null || columns == 0) return;
+
         gc.setFill(Color.rgb(11, 12, 16, 0.15));
         gc.fillRect(0, 0, getWidth(), getHeight());
 
         gc.setFont(Font.font("Consolas", fontSize));
 
-        for (int i = 0; i < columns; i++) {
-            // Genera '0' o '1' casuali
+        for (int i = 0; i < columns && i < drops.length; i++) {
             String charBinario = random.nextBoolean() ? "1" : "0";
             double x = i * fontSize;
             double y = drops[i] * fontSize;
 
-            // Il primo carattere in basso della scia è più brillante
             gc.setFill(Color.rgb(102, 252, 241, 0.9));
             gc.fillText(charBinario, x, y);
 

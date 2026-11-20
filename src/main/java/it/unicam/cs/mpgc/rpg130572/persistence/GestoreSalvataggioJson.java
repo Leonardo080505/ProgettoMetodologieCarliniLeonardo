@@ -4,34 +4,33 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import it.unicam.cs.mpgc.rpg130572.controller.GestorePartita;
+import it.unicam.cs.mpgc.rpg130572.model.Hacker;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Gestisce la scrittura dello stato corrente della partita su file JSON.
+ * Salva lo stato corrente della partita in un file.
  */
 public class GestoreSalvataggioJson {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public void salvaPartita(GestorePartita gestore, String percorsoFile) {
-        JsonObject jsonState = new JsonObject();
+    public void salvaPartita(GestorePartita gestore, String percorsoSalvataggio) {
+        Hacker hacker = gestore.getHacker();
+        JsonObject root = new JsonObject();
 
-        // Salviamo lo stato dell'Hacker
-        jsonState.addProperty("nicknameHacker", gestore.getHacker().getNickname());
-        jsonState.addProperty("energiaHacker", gestore.getHacker().getEnergia());
-        jsonState.addProperty("livelloAbilitaHacker", gestore.getHacker().getLivelloAbilita());
+        JsonObject jsonHacker = new JsonObject();
+        jsonHacker.addProperty("nickname", hacker.getNickname());
+        jsonHacker.addProperty("energia", hacker.getEnergia());
+        jsonHacker.addProperty("abilita", hacker.getLivelloAbilita());
+        jsonHacker.addProperty("nodoCorrenteId", hacker.getNodoCorrente() != null ? hacker.getNodoCorrente().getId() : "");
 
-        if (gestore.getHacker().getNodoCorrente() != null) {
-            jsonState.addProperty("nodoCorrenteId", gestore.getHacker().getNodoCorrente().getId());
-        }
+        root.add("hacker", jsonHacker);
+        root.addProperty("idNodoObiettivo", gestore.getIdNodoObiettivo());
 
-        jsonState.addProperty("idNodoObiettivo", gestore.getIdNodoObiettivo());
-
-        // Scrittura su file
-        try (FileWriter writer = new FileWriter(percorsoFile)) {
-            gson.toJson(jsonState, writer);
+        try (FileWriter writer = new FileWriter(percorsoSalvataggio)) {
+            gson.toJson(root, writer);
         } catch (IOException e) {
             throw new RuntimeException("Errore durante il salvataggio della partita: " + e.getMessage(), e);
         }

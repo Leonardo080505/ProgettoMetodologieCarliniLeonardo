@@ -4,10 +4,10 @@ import it.unicam.cs.mpgc.rpg130572.model.*;
 import java.util.List;
 
 /**
- * Gestisce la logica del gioco e le azioni dell'Hacker
- * all'interno della MappaRete.
+ * Gestisce la logica del gioco e le azioni del Hacker all'interno della MappaRete.
  */
 public class GestorePartita {
+
     private final Hacker hacker;
     private final MappaRete mappa;
     private final String idNodoObiettivo;
@@ -33,9 +33,6 @@ public class GestorePartita {
         return mappa;
     }
 
-    /**
-     * Sposta l'hacker in un nodo adiacente a quello corrente.
-     */
     public boolean spostaHacker(String idNodoDestinazione) {
         if (hacker.getNodoCorrente() == null) {
             NodoRete nodoIniziale = mappa.getNodo(idNodoDestinazione);
@@ -47,18 +44,15 @@ public class GestorePartita {
         }
 
         List<NodoRete> adiacenti = mappa.getNodiAdiacenti(hacker.getNodoCorrente().getId());
-        for (NodoRete nodo : adiacenti) {
-            if (nodo.getId().equals(idNodoDestinazione)) {
-                hacker.setNodoCorrente(nodo);
+        for (NodoRete n : adiacenti) {
+            if (n.getId().equalsIgnoreCase(idNodoDestinazione)) {
+                hacker.setNodoCorrente(n);
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * Esegue il tentativo di hacking sul nodo in cui si trova l'hacker.
-     */
     public String tentaHackingNodoCorrente() {
         NodoRete corrente = hacker.getNodoCorrente();
         if (corrente == null) return "Nessun nodo selezionato.";
@@ -66,7 +60,7 @@ public class GestorePartita {
 
         if (corrente.isTrappola()) {
             hacker.riduciEnergia(30);
-            return "💥 TRAPPOLA ATTIVATA! Il nodo era un Honeypot. Subiti 30 danni da contromisura!";
+            return " TRAPPOLA ATTIVATA! Il nodo era un Honeypot. Subiti 30 danni da contromisura!";
         }
 
         int costoEnergia = corrente.getLivelloSicurezza() * 10;
@@ -76,37 +70,39 @@ public class GestorePartita {
 
         if (hacker.getLivelloAbilita() >= corrente.getLivelloSicurezza()) {
             corrente.setHackerato(true);
-            hacker.incrementaAbilita(); // 👈 Aumenta il livello abilità!
+
+            int bonus = corrente.getBonusAbilita();
+            for (int i = 0; i < bonus; i++) {
+                hacker.incrementaAbilita();
+            }
+
+            String msgBonus = (bonus > 1) ? "  BONUS SERVER (+2 Abilità)!" : "";
             return "Hacking completato con successo sul nodo " + corrente.getId()
-                    + "! 📈 Abilità Hacker aumentata a " + hacker.getLivelloAbilita() + "!";
+                    + "!" + msgBonus + "  Abilità Hacker aumentata a " + hacker.getLivelloAbilita() + "!";
         } else {
-            hacker.riduciEnergia(15);
-            return "Hacking fallito! Livello abilità insufficiente (richiesto "
-                    + corrente.getLivelloSicurezza() + "). Subiti 15 danni.";
+            int dannoSubito = (corrente instanceof Firewall) ? ((Firewall) corrente).getDanno() : 15;
+            hacker.riduciEnergia(dannoSubito);
+            return "Hacking fallito su " + corrente.getId() + "! Livello abilità insufficiente (richiesto "
+                    + corrente.getLivelloSicurezza() + "). Subiti " + dannoSubito + " danni da contromisura.";
         }
+    }
+
+    public String scansionaNodoTarget(String idNodoTarget) {
+        hacker.riduciEnergia(5);
+        NodoRete nodo = mappa.getNodo(idNodoTarget);
+        if (nodo == null) return "Nodo inesistente.";
+
+        if (nodo.isTrappola()) {
+            if (hacker.getLivelloAbilita() >= 2) {
+                return " ANOMALIA RILEVATA su " + idNodoTarget + ": Firma di rete sospetta! Potrebbe essere una TRAPPOLA.";
+            }
+        }
+        return " Scansione completata su " + idNodoTarget + ": Nessuna anomalia evidente rilevata.";
     }
 
     public boolean isVittoria() {
         NodoRete obiettivo = mappa.getNodo(idNodoObiettivo);
         return obiettivo != null && obiettivo.isHackerato();
-    }
-
-    public String scansionaNodo(String idNodoTarget) {
-        if (hacker.getEnergia() < 5) {
-            return "Energia insufficiente per la scansione (servono 5 energia).";
-        }
-
-        hacker.riduciEnergia(5);
-        NodoRete nodo = mappa.getNodo(idNodoTarget);
-        if (nodo == null) return "Nodo inesistente.";
-
-        // La probabilità di rilevare la trappola cresce con l'abilità dell'Hacker
-        if (nodo.isTrappola()) {
-            if (hacker.getLivelloAbilita() >= 2) {
-                return "⚠️ ANOMALIA RILEVATA su " + idNodoTarget + ": Firma di rete sospetta! Potrebbe essere una TRAPPOLA.";
-            }
-        }
-        return "✅ Scansione completata su " + idNodoTarget + ": Nessuna anomalia evidente rilevata.";
     }
 
     public boolean isSconfitta() {

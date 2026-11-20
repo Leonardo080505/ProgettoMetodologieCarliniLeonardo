@@ -3,18 +3,70 @@
     { "id": "NODO_01", "nome": "Gateway d'Ingresso", "livelloSicurezza": 1, "tipo": "NORMALE" },
     { "id": "NODO_02", "nome": "Subnet Dipendenti", "livelloSicurezza": 2, "tipo": "NORMALE" },
     { "id": "NODO_03", "nome": "DB Accesso Rapido", "livelloSicurezza": 1, "tipo": "TRAPPOLA" },
-    { "id": "NODO_04", "nome": "Server Proxy Locale", "livelloSicurezza": 2, "tipo": "NORMALE" },
-    { "id": "NODO_05", "nome": "Backup Log Mirror", "livelloSicurezza": 3, "tipo": "TRAPPOLA" },
-    { "id": "NODO_06", "nome": "Firewall Centrale", "livelloSicurezza": 4, "tipo": "NORMALE" },
-    { "id": "NODO_07", "nome": "Mainframe Riservato", "livelloSicurezza": 5, "tipo": "MAINFRAME" }
+    {
+      "id": "NODO_04",
+      "nome": "Server Locale",
+      "livelloSicurezza": 2,
+      "tipo": "SERVER",
+      "contenutoDati": "Token Admin",
+      "valoreRicompensa": 25
+    },
+    {
+      "id": "NODO_05",
+      "nome": "Firewall ",
+      "livelloSicurezza": 3,
+      "tipo": "FIREWALL",
+      "danno": 20
+    },
+    { "id": "NODO_06", "nome": "! Riservato !", "livelloSicurezza": 2, "tipo": "TRAPPOLA" },
+    {
+      "id": "NODO_07",
+      "nome": "Server Database Segreto",
+      "livelloSicurezza": 3,
+      "tipo": "SERVER",
+      "contenutoDati": "Password  Admin",
+      "valoreRicompensa": 50
+    },
+    { "id": "NODO_08", "nome": "Subnet Amministrazione", "livelloSicurezza": 3, "tipo": "NORMALE" },
+    {
+      "id": "NODO_09",
+      "nome": "Firewall Core Centralizzato",
+      "livelloSicurezza": 4,
+      "tipo": "FIREWALL",
+      "danno": 30
+    },
+    { "id": "NODO_10", "nome": "Subnet Trappola Isolata", "livelloSicurezza": 3, "tipo": "TRAPPOLA" },
+    {
+      "id": "NODO_11",
+      "nome": "Server Archivio Criptato",
+      "livelloSicurezza": 4,
+      "tipo": "SERVER",
+      "contenutoDati": "Dati bancari",
+      "valoreRicompensa": 80
+    },
+    {
+      "id": "NODO_12",
+      "nome": "Firewall ",
+      "livelloSicurezza": 4,
+      "tipo": "FIREWALL",
+      "danno": 35
+    },
+    { "id": "NODO_13", "nome": "Mainframe Riservato", "livelloSicurezza": 5, "tipo": "MAINFRAME" }
   ],
   "collegamenti": [
     { "da": "NODO_01", "a": "NODO_02" },
     { "da": "NODO_01", "a": "NODO_03" },
     { "da": "NODO_02", "a": "NODO_04" },
-    { "da": "NODO_03", "a": "NODO_05" },
-    { "da": "NODO_04", "a": "NODO_06" },
-    { "da": "NODO_05", "a": "NODO_06" },
-    { "da": "NODO_06", "a": "NODO_07" }
+    { "da": "NODO_02", "a": "NODO_05" },
+    { "da": "NODO_03", "a": "NODO_06" },
+    { "da": "NODO_04", "a": "NODO_07" },
+    { "da": "NODO_05", "a": "NODO_08" },
+    { "da": "NODO_06", "a": "NODO_08" },
+    { "da": "NODO_07", "a": "NODO_09" },
+    { "da": "NODO_07", "a": "NODO_10" },
+    { "da": "NODO_07", "a": "NODO_11" },
+    { "da": "NODO_09", "a": "NODO_12" },
+    { "da": "NODO_11", "a": "NODO_12" },
+    { "da": "NODO_12", "a": "NODO_13" }
   ]
 }

@@ -20,11 +20,13 @@ public class CaricatoreSalvataggioJson {
         try (FileReader reader = new FileReader(percorsoSalvataggio)) {
             JsonObject json = gson.fromJson(reader, JsonObject.class);
 
-            String nickname = json.get("nicknameHacker").getAsString();
-            int energia = json.get("energiaHacker").getAsInt();
-            int abilita = json.get("livelloAbilitaHacker").getAsInt();
-            String nodoCorrenteId = json.has("nodoCorrenteId") ? json.get("nodoCorrenteId").getAsString() : "NODO_01";
-            String idNodoObiettivo = json.has("idNodoObiettivo") ? json.get("idNodoObiettivo").getAsString() : "NODO_03";
+            JsonObject jsonHacker = json.getAsJsonObject("hacker");
+            String nickname = jsonHacker.get("nickname").getAsString();
+            int energia = jsonHacker.get("energia").getAsInt();
+            int abilita = jsonHacker.get("abilita").getAsInt();
+            String nodoCorrenteId = jsonHacker.get("nodoCorrenteId").getAsString();
+
+            String idNodoObiettivo = json.get("idNodoObiettivo").getAsString();
 
             Hacker hacker = new Hacker(nickname, energia, abilita);
             GestorePartita gestore = new GestorePartita(hacker, mappa, idNodoObiettivo);

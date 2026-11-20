@@ -3,10 +3,10 @@ package it.unicam.cs.mpgc.rpg130572.model;
 import java.util.*;
 
 /**
- * Rappresenta la rete di nodi all'interno del gioco.
- * Gestisce i nodi presenti e le connessioni orientate o bidirezionali tra di essi.
+ * Rappresenta la struttura a grafo della rete di nodi e gestisce le connessioni tra di essi.
  */
 public class MappaRete {
+
     private final Map<String, NodoRete> nodi;
     private final Map<String, List<String>> adiacenze;
 
@@ -15,26 +15,17 @@ public class MappaRete {
         this.adiacenze = new HashMap<>();
     }
 
-    /**
-     * Aggiunge un nodo alla mappa.
-     */
     public void aggiungiNodo(NodoRete nodo) {
         if (nodo == null) {
-            throw new IllegalArgumentException("Il nodo da aggiungere non può essere null.");
-        }
-        if (nodi.containsKey(nodo.getId())) {
-            throw new IllegalArgumentException("Esiste già un nodo con ID: " + nodo.getId());
+            throw new IllegalArgumentException("Impossibile aggiungre un nodo null.");
         }
         nodi.put(nodo.getId(), nodo);
-        adiacenze.put(nodo.getId(), new ArrayList<>());
+        adiacenze.putIfAbsent(nodo.getId(), new ArrayList<>());
     }
 
-    /**
-     * Collega due nodi in modo bidirezionale.
-     */
     public void collegaNodi(String idOrigine, String idDestinazione) {
         if (!nodi.containsKey(idOrigine) || !nodi.containsKey(idDestinazione)) {
-            throw new IllegalArgumentException("Entrambi i nodi devono esistere nella mappa per essere collegati.");
+            throw new IllegalArgumentException("Entrambi i nodi devono esistere per creare un collegamento.");
         }
         if (!adiacenze.get(idOrigine).contains(idDestinazione)) {
             adiacenze.get(idOrigine).add(idDestinazione);
@@ -52,9 +43,6 @@ public class MappaRete {
         return Collections.unmodifiableCollection(nodi.values());
     }
 
-    /**
-     * Restituisce la lista di nodi adiacenti (collegati direttamente) a quello indicato.
-     */
     public List<NodoRete> getNodiAdiacenti(String idNodo) {
         List<String> viciniIds = adiacenze.getOrDefault(idNodo, Collections.emptyList());
         List<NodoRete> vicini = new ArrayList<>();

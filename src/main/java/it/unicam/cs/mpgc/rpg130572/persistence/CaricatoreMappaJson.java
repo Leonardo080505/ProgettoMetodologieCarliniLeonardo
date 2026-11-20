@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * Gestisce il caricamento della mappa di rete da file , implementando l'interfaccia CaricatoreMappa.
+ * Gestisce il caricamento della mappa di rete da file JSON, implementando l'interfaccia CaricatoreMappa.
  */
 public class CaricatoreMappaJson implements CaricatoreMappa {
 
@@ -43,7 +43,6 @@ public class CaricatoreMappaJson implements CaricatoreMappa {
                 int sicurezza = obj.get("livelloSicurezza").getAsInt();
 
                 NodoRete nodoGenerato;
-
                 if ("FIREWALL".equalsIgnoreCase(tipo)) {
                     int danno = obj.has("danno") ? obj.get("danno").getAsInt() : 15;
                     nodoGenerato = new Firewall(id, nome, sicurezza, danno);
