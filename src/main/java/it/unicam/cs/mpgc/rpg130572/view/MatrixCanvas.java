@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
 import java.util.Random;
 
 /**
- * Canvas animato che genera l'effetto pioggia di codice binario stile Matrix.
+ * effetto pioggia di codice binario stile Matrix.
  */
 public class MatrixCanvas extends Canvas {
 

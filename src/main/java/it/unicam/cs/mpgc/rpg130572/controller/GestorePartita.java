@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130572.model.*;
 import java.util.List;
 
 /**
- * Gestisce la logica del gioco e le azioni del Hacker all'interno della MappaRete.
+ * Gestisce la logica del gioco e le azioni dell'Hacker all'interno della MappaRete.
  */
 public class GestorePartita {
 
@@ -60,7 +60,7 @@ public class GestorePartita {
 
         if (corrente.isTrappola()) {
             hacker.riduciEnergia(30);
-            return " TRAPPOLA ATTIVATA! Il nodo era un Honeypot. Subiti 30 danni da contromisura!";
+            return " TRAPPOLA ATTIVATA! Il nodo era una trappola . Subisci 30 danni !";
         }
 
         int costoEnergia = corrente.getLivelloSicurezza() * 10;
@@ -80,10 +80,9 @@ public class GestorePartita {
             return "Hacking completato con successo sul nodo " + corrente.getId()
                     + "!" + msgBonus + "  Abilità Hacker aumentata a " + hacker.getLivelloAbilita() + "!";
         } else {
-            int dannoSubito = (corrente instanceof Firewall) ? ((Firewall) corrente).getDanno() : 15;
-            hacker.riduciEnergia(dannoSubito);
+            hacker.riduciEnergia(15);
             return "Hacking fallito su " + corrente.getId() + "! Livello abilità insufficiente (richiesto "
-                    + corrente.getLivelloSicurezza() + "). Subiti " + dannoSubito + " danni da contromisura.";
+                    + corrente.getLivelloSicurezza() + "). Subisci 15 danni.";
         }
     }
 
@@ -98,6 +97,10 @@ public class GestorePartita {
             }
         }
         return " Scansione completata su " + idNodoTarget + ": Nessuna anomalia evidente rilevata.";
+    }
+
+    public String scansionaNodo(String idNodoTarget) {
+        return scansionaNodoTarget(idNodoTarget);
     }
 
     public boolean isVittoria() {

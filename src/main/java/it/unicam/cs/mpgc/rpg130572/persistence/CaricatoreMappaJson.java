@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * Gestisce il caricamento della mappa di rete da file JSON, implementando l'interfaccia CaricatoreMappa.
+ * Gestisce il caricamento della mappa di rete da file JSON.
  */
 public class CaricatoreMappaJson implements CaricatoreMappa {
 
@@ -43,11 +43,13 @@ public class CaricatoreMappaJson implements CaricatoreMappa {
                 int sicurezza = obj.get("livelloSicurezza").getAsInt();
 
                 NodoRete nodoGenerato;
-                if ("FIREWALL".equalsIgnoreCase(tipo)) {
-                    int danno = obj.has("danno") ? obj.get("danno").getAsInt() : 15;
-                    nodoGenerato = new Firewall(id, nome, sicurezza, danno);
-                } else if ("SERVER".equalsIgnoreCase(tipo)) {
-                    String dati = obj.has("contenutoDati") ? obj.get("contenutoDati").getAsString() : "Dati segreti";
+                if ("SERVER".equalsIgnoreCase(tipo)) {
+                    String dati = "Dati Segreti";
+                    if (obj.has("contenutoDati") && !obj.get("contenutoDati").getAsString().isBlank()) {
+                        dati = obj.get("contenutoDati").getAsString();
+                    } else if (obj.has("tipoContenuto") && !obj.get("tipoContenuto").getAsString().isBlank()) {
+                        dati = obj.get("tipoContenuto").getAsString();
+                    }
                     int ricompensa = obj.has("valoreRicompensa") ? obj.get("valoreRicompensa").getAsInt() : 10;
                     nodoGenerato = new ServerDati(id, nome, sicurezza, dati, ricompensa);
                 } else {

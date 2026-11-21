@@ -13,10 +13,9 @@
     },
     {
       "id": "NODO_05",
-      "nome": "Firewall ",
+      "nome": "nodo ",
       "livelloSicurezza": 3,
-      "tipo": "FIREWALL",
-      "danno": 20
+      "tipo": "NORMALE"
     },
     { "id": "NODO_06", "nome": "! Riservato !", "livelloSicurezza": 2, "tipo": "TRAPPOLA" },
     {
@@ -30,10 +29,9 @@
     { "id": "NODO_08", "nome": "Subnet Amministrazione", "livelloSicurezza": 3, "tipo": "NORMALE" },
     {
       "id": "NODO_09",
-      "nome": "Firewall Core Centralizzato",
+      "nome": "nodo",
       "livelloSicurezza": 4,
-      "tipo": "FIREWALL",
-      "danno": 30
+      "tipo": "NORMALE"
     },
     { "id": "NODO_10", "nome": "Subnet Trappola Isolata", "livelloSicurezza": 3, "tipo": "TRAPPOLA" },
     {
@@ -46,10 +44,9 @@
     },
     {
       "id": "NODO_12",
-      "nome": "Firewall ",
+      "nome": "nodo ",
       "livelloSicurezza": 4,
-      "tipo": "FIREWALL",
-      "danno": 35
+      "tipo": "NORMALE"
     },
     { "id": "NODO_13", "nome": "Mainframe Riservato", "livelloSicurezza": 5, "tipo": "MAINFRAME" }
   ],

@@ -20,15 +20,15 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("=== NETWORK HACKER (Mappa caricata da JSON) ===");
-        System.out.println("Obiettivo: Violare il Mainframe Riservato (NODO_10)!\n");
+        System.out.println("=== NETWORK HACKER  ===");
+        System.out.println("Obiettivo: Violare il Mainframe Riservato (NODO_13)!\n");
 
         while (!gestore.isVittoria() && !gestore.isSconfitta()) {
             NodoRete nodoAttuale = hacker.getNodoCorrente();
             System.out.println("--------------------------------------------------");
             System.out.println("HACKER: " + hacker.getNickname() + " | Energia: " + hacker.getEnergia() + " | Abilità: " + hacker.getLivelloAbilita());
             System.out.println("POSIZIONE ATTUALE: [" + nodoAttuale.getId() + "] " + nodoAttuale.getNome() + " (Sicurezza: " + nodoAttuale.getLivelloSicurezza() + ")");
-            System.out.println("STATO NODO: " + (nodoAttuale.isHackerato() ? "VIOLATO ✅" : "NON VIOLATO ❌"));
+            System.out.println("STATO NODO: " + (nodoAttuale.isHackerato() ? "VIOLATO " : "NON VIOLATO "));
             System.out.println("--------------------------------------------------");
             System.out.println("Azioni disponibili:");
             System.out.println("1. Tenta Hacking nodo corrente");
@@ -67,7 +67,7 @@ public class Main {
 
         System.out.println("\n==================================================");
         if (gestore.isVittoria()) {
-            System.out.println(" VITTORIA! Hai violato il Mainframe Riservato (NODO_10)!");
+            System.out.println(" VITTORIA! Hai violato il Mainframe Riservato (NODO_13)!");
         } else {
             System.out.println(" SCONFITTA! Energia esaurita ");
         }

@@ -76,11 +76,11 @@ public class AppJavaFX extends Application {
         Label infoLabel = new Label("Seleziona un'opzione per entrare nella rete:");
         infoLabel.setStyle("-fx-font-size: 14px;");
 
-        Button btnNuovaPartita = new Button("🎮 Nuova Partita");
+        Button btnNuovaPartita = new Button(" Nuova Partita");
         btnNuovaPartita.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
         btnNuovaPartita.setOnAction(event -> iniziaNuovaPartita());
 
-        Button btnCaricaPartita = new Button("📂 Carica Partita da JSON");
+        Button btnCaricaPartita = new Button(" Carica Partita da JSON");
         btnCaricaPartita.setStyle("-fx-font-size: 14px; -fx-padding: 10 20;");
         btnCaricaPartita.setOnAction(event -> caricaPartitaEsistente());
 
@@ -154,7 +154,7 @@ public class AppJavaFX extends Application {
 
         boxAdiacenti = new VBox(8);
 
-        btnHack = new Button("⚡ Tenta Hacking");
+        btnHack = new Button(" Tenta Hacking");
         btnHack.getStyleClass().add("button-hack");
         btnHack.setOnAction(event -> {
             String esito = gestore.tentaHackingNodoCorrente();
@@ -163,7 +163,7 @@ public class AppJavaFX extends Application {
             controllaEsitoPartita();
         });
 
-        Button btnSalva = new Button("💾 Salva Partita");
+        Button btnSalva = new Button(" Salva Partita");
         btnSalva.setOnAction(event -> eseguiSalvataggio());
 
         VBox leftBox = new VBox(10, lblVicini, boxAdiacenti, btnHack, btnSalva);
@@ -185,18 +185,18 @@ public class AppJavaFX extends Application {
 
     private void aggiornaInterfaccia() {
         Hacker hacker = gestore.getHacker();
-        lblStatoHacker.setText("👤 HACKER: " + hacker.getNickname()
-                + "  |  ⚡ ENERGIA: " + hacker.getEnergia()
-                + "  |  📈 ABILITÀ: " + hacker.getLivelloAbilita());
+        lblStatoHacker.setText(" HACKER: " + hacker.getNickname()
+                + "  |   ENERGIA: " + hacker.getEnergia()
+                + "  |   ABILITÀ: " + hacker.getLivelloAbilita());
 
         NodoRete nodo = hacker.getNodoCorrente();
         if (nodo != null) {
-            String statoViolazione = nodo.isHackerato() ? "✅ VIOLATO" : "❌ NON VIOLATO";
-            lblNodoAttuale.setText("📍 POSIZIONE ATTUALE: [" + nodo.getId() + "] " + nodo.getNome()
-                    + "\n🔒 Abilità richiesta: " + nodo.getLivelloSicurezza()
+            String statoViolazione = nodo.isHackerato() ? " VIOLATO" : " NON VIOLATO";
+            lblNodoAttuale.setText(" POSIZIONE ATTUALE: [" + nodo.getId() + "] " + nodo.getNome()
+                    + "\n Abilità richiesta: " + nodo.getLivelloSicurezza()
                     + "  |  Tipo: " + nodo.getTipo()
                     + "  |  Stato: " + statoViolazione);
-            btnHack.setText("⚡ Tenta Hacking (Richiede Abilità: " + nodo.getLivelloSicurezza() + ")");
+            btnHack.setText(" Tenta Hacking (Richiede Abilità: " + nodo.getLivelloSicurezza() + ")");
         }
 
         boxAdiacenti.getChildren().clear();
@@ -205,7 +205,7 @@ public class AppJavaFX extends Application {
             for (NodoRete v : vicini) {
                 HBox rigaNodo = new HBox(5);
 
-                Button btnSposta = new Button("➡️ " + v.getId() + " (" + v.getTipo() + " - Sicurez: " + v.getLivelloSicurezza() + ")");
+                Button btnSposta = new Button( v.getId() + " (Sicurez: " + v.getLivelloSicurezza() + ")");
                 btnSposta.setMaxWidth(Double.MAX_VALUE);
                 HBox.setHgrow(btnSposta, Priority.ALWAYS);
                 btnSposta.setOnAction(event -> {
@@ -247,7 +247,7 @@ public class AppJavaFX extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, " VITTORIA! Hai completato l'obiettivo violando NODO_13!", ButtonType.OK);
             alert.showAndWait();
         } else if (gestore.isSconfitta()) {
-            txtLog.appendText("\n☠ SCONFITTA! L'energia dell'Hacker si è azzerata.\n");
+            txtLog.appendText("\n SCONFITTA! L'energia dell'Hacker si è azzerata.\n");
             Alert alert = new Alert(Alert.AlertType.ERROR, " SCONFITTA! L'energia dell'Hacker si è azzerata.", ButtonType.OK);
             alert.showAndWait();
         }
