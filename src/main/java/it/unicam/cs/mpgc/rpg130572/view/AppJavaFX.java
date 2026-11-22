@@ -11,12 +11,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.List;
-
 
 public class AppJavaFX extends Application {
 
@@ -29,6 +32,15 @@ public class AppJavaFX extends Application {
     private Button btnHack;
     private TextArea txtLog;
     private VBox boxAdiacenti;
+
+    private final Color COLOR_BG_DARK = Color.web("#0b0c10");
+    private final Color COLOR_PANEL_BG = Color.rgb(31, 40, 51, 0.85);
+    private final Color COLOR_CARD_BG = Color.web("#1f2833");
+    private final Color COLOR_CYAN = Color.web("#66fcf1");
+    private final Color COLOR_BORDER_CYAN = Color.web("#45f3ff");
+    private final Color COLOR_TEXT_LIGHT = Color.web("#c5c6c7");
+    private final Color COLOR_RED = Color.web("#ff2a6d");
+    private final Color COLOR_RED_HOVER = Color.web("#ff5c8d");
 
     @Override
     public void start(Stage primaryStage) {
@@ -45,11 +57,17 @@ public class AppJavaFX extends Application {
 
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(30));
-        root.setStyle("-fx-background-color: transparent;");
+        root.setBackground(Background.EMPTY);
 
         Label titleLabel = new Label("=== NETWORK HACKER ===");
-        titleLabel.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #66fcf1; "
-                + "-fx-effect: dropshadow(three-pass-box, #66fcf1, 10, 0, 0, 0);");
+        titleLabel.setFont(Font.font("System", FontWeight.BOLD, 26));
+        titleLabel.setTextFill(COLOR_CYAN);
+
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(COLOR_CYAN);
+        shadow.setRadius(10);
+        shadow.setSpread(0.2);
+        titleLabel.setEffect(shadow);
 
         VBox topBox = new VBox(titleLabel);
         topBox.setAlignment(Pos.CENTER);
@@ -67,16 +85,19 @@ public class AppJavaFX extends Application {
 
     private VBox creaCenterBoxIniziale() {
         Label infoLabel = new Label("Seleziona un'opzione per entrare nella rete:");
-        infoLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #c5c6c7; -fx-font-weight: bold;");
+        infoLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
+        infoLabel.setTextFill(COLOR_TEXT_LIGHT);
 
         Button btnNuovaPartita = new Button("Nuova Partita");
-        stilaBottone(btnNuovaPartita, "#1f2833", "#66fcf1", "#66fcf1");
-        btnNuovaPartita.setStyle(btnNuovaPartita.getStyle() + " -fx-font-size: 14px; -fx-padding: 10 20;");
+        stilaBottone(btnNuovaPartita, COLOR_CARD_BG, COLOR_CYAN, COLOR_CYAN);
+        btnNuovaPartita.setFont(Font.font("System", FontWeight.BOLD, 14));
+        btnNuovaPartita.setPadding(new Insets(10, 20, 10, 20));
         btnNuovaPartita.setOnAction(event -> iniziaNuovaPartita());
 
         Button btnCaricaPartita = new Button("Carica Partita da JSON");
-        stilaBottone(btnCaricaPartita, "#1f2833", "#66fcf1", "#66fcf1");
-        btnCaricaPartita.setStyle(btnCaricaPartita.getStyle() + " -fx-font-size: 14px; -fx-padding: 10 20;");
+        stilaBottone(btnCaricaPartita, COLOR_CARD_BG, COLOR_CYAN, COLOR_CYAN);
+        btnCaricaPartita.setFont(Font.font("System", FontWeight.BOLD, 14));
+        btnCaricaPartita.setPadding(new Insets(10, 20, 10, 20));
         btnCaricaPartita.setOnAction(event -> caricaPartitaEsistente());
 
         VBox centerBox = new VBox(15, infoLabel, btnNuovaPartita, btnCaricaPartita);
@@ -129,14 +150,18 @@ public class AppJavaFX extends Application {
 
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(15));
-        root.setStyle("-fx-background-color: transparent;");
+        root.setBackground(Background.EMPTY);
 
         lblStatoHacker = new Label();
-        lblStatoHacker.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #66fcf1;");
+        lblStatoHacker.setFont(Font.font("System", FontWeight.BOLD, 14));
+        lblStatoHacker.setTextFill(COLOR_CYAN);
 
         lblNodoAttuale = new Label();
-        lblNodoAttuale.setStyle("-fx-font-size: 13px; -fx-text-fill: #c5c6c7; -fx-background-color: rgba(31, 40, 51, 0.85); "
-                + "-fx-padding: 10px; -fx-border-color: #66fcf1; -fx-border-radius: 4px;");
+        lblNodoAttuale.setFont(Font.font("System", FontWeight.NORMAL, 13));
+        lblNodoAttuale.setTextFill(COLOR_TEXT_LIGHT);
+        lblNodoAttuale.setBackground(new Background(new BackgroundFill(COLOR_PANEL_BG, new CornerRadii(4), Insets.EMPTY)));
+        lblNodoAttuale.setBorder(new Border(new BorderStroke(COLOR_CYAN, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1))));
+        lblNodoAttuale.setPadding(new Insets(10));
 
         VBox topBox = new VBox(8, lblStatoHacker, lblNodoAttuale);
         topBox.setPadding(new Insets(0, 0, 10, 0));
@@ -144,17 +169,18 @@ public class AppJavaFX extends Application {
 
         txtLog = new TextArea();
         txtLog.setEditable(false);
-        txtLog.setStyle("-fx-control-inner-background: #0b0c10; -fx-text-fill: #00ff66; -fx-font-family: 'Consolas', monospace; "
-                + "-fx-font-size: 12px; -fx-border-color: #45f3ff; -fx-border-radius: 4px;");
+        txtLog.setFont(Font.font("Consolas", 12));
+        txtLog.setBorder(new Border(new BorderStroke(COLOR_BORDER_CYAN, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1))));
         txtLog.appendText(messaggioIniziale + "\nObiettivo: Violare il Mainframe Riservato (NODO_13)\n--------------------------------------------------\n");
 
         Label lblVicini = new Label("Spostati / Scansiona:");
-        lblVicini.setStyle("-fx-font-weight: bold; -fx-text-fill: #66fcf1; -fx-font-size: 13px;");
+        lblVicini.setFont(Font.font("System", FontWeight.BOLD, 13));
+        lblVicini.setTextFill(COLOR_CYAN);
 
         boxAdiacenti = new VBox(8);
 
         btnHack = new Button("Tenta Hacking");
-        stilaBottoneSpeciale(btnHack, "#ff2a6d", "#ffffff", "#ff5c8d");
+        stilaBottoneSpeciale(btnHack, COLOR_RED, Color.WHITE, COLOR_RED_HOVER);
         btnHack.setOnAction(event -> {
             String esito = gestore.tentaHackingNodoCorrente();
             txtLog.appendText(esito + "\n");
@@ -163,7 +189,7 @@ public class AppJavaFX extends Application {
         });
 
         Button btnSalva = new Button("Salva Partita");
-        stilaBottone(btnSalva, "#1f2833", "#66fcf1", "#66fcf1");
+        stilaBottone(btnSalva, COLOR_CARD_BG, COLOR_CYAN, COLOR_CYAN);
         btnSalva.setOnAction(event -> eseguiSalvataggio());
 
         VBox leftBox = new VBox(10, lblVicini, boxAdiacenti, btnHack, btnSalva);
@@ -208,7 +234,7 @@ public class AppJavaFX extends Application {
                 Button btnSposta = new Button("--> " + v.getId() + " (Sicurez: " + v.getLivelloSicurezza() + ")");
                 btnSposta.setMaxWidth(Double.MAX_VALUE);
                 HBox.setHgrow(btnSposta, Priority.ALWAYS);
-                stilaBottone(btnSposta, "#1f2833", "#c5c6c7", "#45f3ff");
+                stilaBottone(btnSposta, COLOR_CARD_BG, COLOR_TEXT_LIGHT, COLOR_BORDER_CYAN);
 
                 btnSposta.setOnAction(event -> {
                     if (gestore.spostaHacker(v.getId())) {
@@ -218,7 +244,7 @@ public class AppJavaFX extends Application {
                 });
 
                 Button btnScansiona = new Button("Scansiona");
-                stilaBottone(btnScansiona, "#1f2833", "#66fcf1", "#66fcf1");
+                stilaBottone(btnScansiona, COLOR_CARD_BG, COLOR_CYAN, COLOR_CYAN);
                 btnScansiona.setTooltip(new Tooltip("Scansiona nodo " + v.getId()));
 
                 btnScansiona.setOnAction(event -> {
@@ -234,32 +260,54 @@ public class AppJavaFX extends Application {
         }
     }
 
-    private void stilaBottone(Button btn, String bgColor, String textColor, String borderColor) {
-        String baseStyle = String.format("-fx-background-color: %s; -fx-text-fill: %s; -fx-border-color: %s; "
-                        + "-fx-border-radius: 4px; -fx-background-radius: 4px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 6 10;",
-                bgColor, textColor, borderColor);
+    private void stilaBottone(Button btn, Color bgColor, Color textColor, Color borderColor) {
+        Background bgNormal = new Background(new BackgroundFill(bgColor, new CornerRadii(4), Insets.EMPTY));
+        Border borderNormal = new Border(new BorderStroke(borderColor, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1)));
 
-        String hoverStyle = String.format("-fx-background-color: %s; -fx-text-fill: #0b0c10; -fx-border-color: %s; "
-                        + "-fx-border-radius: 4px; -fx-background-radius: 4px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 6 10;",
-                borderColor, borderColor);
+        Background bgHover = new Background(new BackgroundFill(borderColor, new CornerRadii(4), Insets.EMPTY));
+        Border borderHover = new Border(new BorderStroke(borderColor, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1)));
 
-        btn.setStyle(baseStyle);
-        btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
-        btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
+        btn.setFont(Font.font("System", FontWeight.BOLD, 12));
+        btn.setTextFill(textColor);
+        btn.setBackground(bgNormal);
+        btn.setBorder(borderNormal);
+        btn.setPadding(new Insets(6, 10, 6, 10));
+
+        btn.setOnMouseEntered(e -> {
+            btn.setBackground(bgHover);
+            btn.setBorder(borderHover);
+            btn.setTextFill(COLOR_BG_DARK);
+        });
+
+        btn.setOnMouseExited(e -> {
+            btn.setBackground(bgNormal);
+            btn.setBorder(borderNormal);
+            btn.setTextFill(textColor);
+        });
     }
 
-    private void stilaBottoneSpeciale(Button btn, String bgColor, String textColor, String hoverBgColor) {
-        String baseStyle = String.format("-fx-background-color: %s; -fx-text-fill: %s; -fx-border-color: %s; "
-                        + "-fx-border-radius: 4px; -fx-background-radius: 4px; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 8 12; -fx-cursor: hand;",
-                bgColor, textColor, bgColor);
+    private void stilaBottoneSpeciale(Button btn, Color bgColor, Color textColor, Color hoverBgColor) {
+        Background bgNormal = new Background(new BackgroundFill(bgColor, new CornerRadii(4), Insets.EMPTY));
+        Border borderNormal = new Border(new BorderStroke(bgColor, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1)));
 
-        String hoverStyle = String.format("-fx-background-color: %s; -fx-text-fill: %s; -fx-border-color: %s; "
-                        + "-fx-border-radius: 4px; -fx-background-radius: 4px; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 8 12; -fx-cursor: hand;",
-                hoverBgColor, textColor, hoverBgColor);
+        Background bgHover = new Background(new BackgroundFill(hoverBgColor, new CornerRadii(4), Insets.EMPTY));
+        Border borderHover = new Border(new BorderStroke(hoverBgColor, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1)));
 
-        btn.setStyle(baseStyle);
-        btn.setOnMouseEntered(e -> btn.setStyle(hoverStyle));
-        btn.setOnMouseExited(e -> btn.setStyle(baseStyle));
+        btn.setFont(Font.font("System", FontWeight.BOLD, 13));
+        btn.setTextFill(textColor);
+        btn.setBackground(bgNormal);
+        btn.setBorder(borderNormal);
+        btn.setPadding(new Insets(8, 12, 8, 12));
+
+        btn.setOnMouseEntered(e -> {
+            btn.setBackground(bgHover);
+            btn.setBorder(borderHover);
+        });
+
+        btn.setOnMouseExited(e -> {
+            btn.setBackground(bgNormal);
+            btn.setBorder(borderNormal);
+        });
     }
 
     private void eseguiSalvataggio() {
@@ -279,8 +327,8 @@ public class AppJavaFX extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "VITTORIA! Hai completato l'obiettivo violando NODO_13!", ButtonType.OK);
             alert.showAndWait();
         } else if (gestore.isSconfitta()) {
-            txtLog.appendText("\n[SCONFITTA] L'energia dell'Hacker si e' azzerata.\n");
-            Alert alert = new Alert(Alert.AlertType.ERROR, "SCONFITTA! L'energia dell'Hacker si e' azzerata.", ButtonType.OK);
+            txtLog.appendText("\nSconfitta! Hai esaurito l'energia.\n");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Sconfitta! Hai esaurito l'energia.", ButtonType.OK);
             alert.showAndWait();
         }
     }
