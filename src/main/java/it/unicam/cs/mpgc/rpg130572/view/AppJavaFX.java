@@ -17,10 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.List;
 
-/**
- * Interfaccia grafica principale JavaFX realizzata al 100% in codice Java (senza fogli CSS esterni).
- * Gioco: Network Hacker
- */
+
 public class AppJavaFX extends Application {
 
     private Stage stagePrincipale;
